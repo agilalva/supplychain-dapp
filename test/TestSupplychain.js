@@ -211,31 +211,47 @@ contract("SupplyChain", function (accounts) {
     // 7th Test
     it("Testing smart contract function receiveItem() that allows a retailer to mark coffee received", async () => {
         const supplyChain = await SupplyChain.deployed();
+        await supplyChain.addRetailer(retailerID);
 
         // Declare and Initialize a variable for event
 
         // Watch the emitted event Received()
 
         // Mark an item as Sold by calling function buyItem()
+        const result = await supplyChain.receiveItem(upc, { from: retailerID });
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
+        const resultBufferOne = await supplyChain.fetchItemBufferOne.call(upc);
+        const resultBufferTwo = await supplyChain.fetchItemBufferTwo.call(upc);
 
         // Verify the result set
+        assert.equal(resultBufferOne[2], retailerID, "Error: Invalid ownerID");
+        assert.equal(resultBufferTwo[5], 6, "Error: Invalid item State");
+        assert.equal(resultBufferTwo[7], retailerID, "Error: Invalid retailerID");
+        truffleAssert.eventEmitted(result, "Received");
     });
 
     // 8th Test
     it("Testing smart contract function purchaseItem() that allows a consumer to purchase coffee", async () => {
         const supplyChain = await SupplyChain.deployed();
+        await supplyChain.addConsumer(consumerID);
 
         // Declare and Initialize a variable for event
 
         // Watch the emitted event Purchased()
 
         // Mark an item as Sold by calling function buyItem()
+        const result = await supplyChain.purchaseItem(upc, { from: consumerID });
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
+        const resultBufferOne = await supplyChain.fetchItemBufferOne.call(upc);
+        const resultBufferTwo = await supplyChain.fetchItemBufferTwo.call(upc);
 
         // Verify the result set
+        assert.equal(resultBufferOne[2], consumerID, "Error: Invalid ownerID");
+        assert.equal(resultBufferTwo[5], 7, "Error: Invalid item State");
+        assert.equal(resultBufferTwo[8], consumerID, "Error: Invalid consumerID");
+        truffleAssert.eventEmitted(result, "Purchased");
     });
 
     // 9th Test
