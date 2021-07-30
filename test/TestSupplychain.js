@@ -17,7 +17,7 @@ contract("SupplyChain", function (accounts) {
     var productID = sku + upc;
     const productNotes = "Best beans for Espresso";
     const productPrice = web3.utils.toWei("1", "ether");
-    var itemState = 0;
+    var itemState = 7;
     const distributorID = accounts[2];
     const retailerID = accounts[3];
     const consumerID = accounts[4];
@@ -259,8 +259,21 @@ contract("SupplyChain", function (accounts) {
         const supplyChain = await SupplyChain.deployed();
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
+        const resultBufferOne = await supplyChain.fetchItemBufferOne.call(upc);
 
         // Verify the result set:
+        assert.equal(resultBufferOne[0], sku, "Error: Invalid sku");
+        assert.equal(resultBufferOne[1], upc, "Error: Invalid upc");
+        assert.equal(resultBufferOne[2], consumerID, "Error: Invalid ownerID");
+        assert.equal(resultBufferOne[3], originFarmerID, "Error: Invalid originFarmerID");
+        assert.equal(resultBufferOne[4], originFarmName, "Error: Invalid originFarmName");
+        assert.equal(
+            resultBufferOne[5],
+            originFarmInformation,
+            "Error: Invalid originFarmInformation"
+        );
+        assert.equal(resultBufferOne[6], originFarmLatitude, "Error: Invalid originFarmLatitude");
+        assert.equal(resultBufferOne[7], originFarmLongitude, "Error: Invalid originFarmLongitude");
     });
 
     // 10th Test
@@ -268,7 +281,17 @@ contract("SupplyChain", function (accounts) {
         const supplyChain = await SupplyChain.deployed();
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
+        const resultBufferTwo = await supplyChain.fetchItemBufferTwo.call(upc);
 
         // Verify the result set:
+        assert.equal(resultBufferTwo[0], sku, "Error: Invalid sku");
+        assert.equal(resultBufferTwo[1], upc, "Error: Invalid upc");
+        assert.equal(resultBufferTwo[2], productID, "Error: Invalid productID");
+        assert.equal(resultBufferTwo[3], productNotes, "Error: Invalid productNotes");
+        assert.equal(resultBufferTwo[4], productPrice, "Error: Invalid productPrice");
+        assert.equal(resultBufferTwo[5], itemState, "Error: Invalid item State");
+        assert.equal(resultBufferTwo[6], distributorID, "Error: Invalid distributorID");
+        assert.equal(resultBufferTwo[7], retailerID, "Error: Invalid retailerID");
+        assert.equal(resultBufferTwo[8], consumerID, "Error: Invalid consumerID");
     });
 });
