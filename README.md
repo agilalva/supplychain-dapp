@@ -47,10 +47,10 @@ The `SupplyChain.sol` contract was deployed on the Rinkeby network successfully:
 
 ## Diagrams
 
-![Activity](images/activity.png)
+![Activity](images/Activity.png)
 
-![Sequence](images/sequence.png)
+![Sequence](images/Sequence.png)
 
-![State](images/state.png)
+![State](images/State.png)
 
-![Class](images/data.png)
+![Class](images/Data.png)
